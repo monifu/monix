@@ -2545,7 +2545,7 @@ sealed abstract class Task[+A] extends Serializable with TaskDeprecated.BinCompa
   /**
     * Returns this task mapped to the supplied value.
     */
-  final def as[B](b: B): Task[B] =
+  final def as[B](b: => B): Task[B] =
     this.map(_ => b)
 
   /** Returns this task mapped to unit
