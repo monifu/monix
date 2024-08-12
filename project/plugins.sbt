@@ -1,7 +1,7 @@
 addSbtPlugin("org.scala-js"              % "sbt-scalajs"             % "1.14.0")
 addSbtPlugin("com.github.sbt"            % "sbt-unidoc"              % "0.5.0")
 addSbtPlugin("pl.project13.scala"        % "sbt-jmh"                 % "0.4.3")
-addSbtPlugin("com.typesafe"              % "sbt-mima-plugin"         % "1.1.0")
+addSbtPlugin("com.typesafe"              % "sbt-mima-plugin"         % "1.1.4")
 addSbtPlugin("de.heikoseeberger"         % "sbt-header"              % "5.7.0")
 addSbtPlugin("org.scalameta"             % "sbt-scalafmt"            % "2.4.6")
 addSbtPlugin("com.github.tkawachi"       % "sbt-doctest"             % "0.10.0")
