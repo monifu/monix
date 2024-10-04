@@ -1,4 +1,4 @@
-addSbtPlugin("org.scala-js"              % "sbt-scalajs"             % "1.14.0")
+addSbtPlugin("org.scala-js"              % "sbt-scalajs"             % "1.17.0")
 addSbtPlugin("com.github.sbt"            % "sbt-unidoc"              % "0.5.0")
 addSbtPlugin("pl.project13.scala"        % "sbt-jmh"                 % "0.4.3")
 addSbtPlugin("com.typesafe"              % "sbt-mima-plugin"         % "1.1.0")
