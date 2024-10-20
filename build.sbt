@@ -48,7 +48,7 @@ val minitest_Version          = "2.9.6"
 val implicitBox_Version       = "0.3.4"
 val kindProjector_Version     = "0.13.2"
 val betterMonadicFor_Version  = "0.3.1"
-val silencer_Version          = "1.7.8"
+val silencer_Version          = "1.7.19"
 val scalaCompat_Version       = "2.7.0"
 
 // The Monix version with which we must keep binary compatibility.
