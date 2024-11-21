@@ -18,7 +18,7 @@
 package monix.catnap
 package internal
 
-import cats.effect.{ Concurrent, ContextShift }
+import cats.effect.Concurrent
 import monix.execution.CancelablePromise
 import monix.execution.atomic.AtomicAny
 import monix.execution.internal.Constants

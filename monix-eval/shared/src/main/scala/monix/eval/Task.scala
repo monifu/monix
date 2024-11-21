@@ -39,6 +39,7 @@ import scala.concurrent.duration.{ Duration, FiniteDuration, NANOSECONDS, TimeUn
 import scala.concurrent.{ ExecutionContext, Future, TimeoutException }
 import scala.util.{ Failure, Success, Try }
 import scala.annotation.unused
+import cats.effect.Temporal
 
 /** `Task` represents a specification for a possibly lazy or
   * asynchronous computation, which when executed will produce an `A`
@@ -5039,8 +5040,8 @@ private[eval] abstract class TaskTimers extends TaskClocks {
     * [[monix.execution.Scheduler Scheduler]]
     * (that's being injected in [[Task.runToFuture]]).
     */
-  implicit val timer: Timer[Task] =
-    new Timer[Task] {
+  implicit val timer: Temporal[Task] =
+    new Temporal[Task] {
       override def sleep(duration: FiniteDuration): Task[Unit] =
         Task.sleep(duration)
       override def clock: Clock[Task] =
@@ -5050,8 +5051,8 @@ private[eval] abstract class TaskTimers extends TaskClocks {
   /** Builds a `cats.effect.Timer` instance, given a
     * [[monix.execution.Scheduler Scheduler]] reference.
     */
-  def timer(s: Scheduler): Timer[Task] =
-    new Timer[Task] {
+  def timer(s: Scheduler): Temporal[Task] =
+    new Temporal[Task] {
       override def sleep(duration: FiniteDuration): Task[Unit] =
         Task.sleep(duration).executeOn(s)
       override def clock: Clock[Task] =

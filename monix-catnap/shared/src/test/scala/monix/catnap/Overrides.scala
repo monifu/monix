@@ -26,7 +26,7 @@ object Overrides {
   implicit val asyncIO: Async[IO] =
     new CustomSyncIO with Async[IO] {
       def async[A](k: (Either[Throwable, A] => Unit) => Unit): IO[A] =
-        IO.ioEffect.async(k)
+        IO.ioEffect.async_(k)
       def asyncF[A](k: (Either[Throwable, A] => Unit) => IO[Unit]): IO[A] =
         IO.ioEffect.asyncF(k)
     }

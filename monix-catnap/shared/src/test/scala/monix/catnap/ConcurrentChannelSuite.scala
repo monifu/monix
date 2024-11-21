@@ -17,7 +17,7 @@
 
 package monix.catnap
 
-import cats.effect.{ ContextShift, IO, Timer }
+import cats.effect.IO
 import cats.implicits._
 import minitest.TestSuite
 import monix.execution.BufferCapacity.{ Bounded, Unbounded }
@@ -29,6 +29,7 @@ import monix.execution.{ BufferCapacity, Scheduler, TestUtils }
 
 import scala.concurrent.TimeoutException
 import scala.concurrent.duration._
+import cats.effect.Temporal
 
 object ConcurrentChannelFakeSuite extends BaseConcurrentChannelSuite[TestScheduler] {
   def setup() = TestScheduler()
@@ -76,7 +77,7 @@ abstract class BaseConcurrentChannelSuite[S <: Scheduler] extends TestSuite[S] w
 
   implicit def contextShift(implicit s: Scheduler): ContextShift[IO] =
     SchedulerEffect.contextShift[IO](s)(IO.ioEffect)
-  implicit def timer(implicit s: Scheduler): Timer[IO] =
+  implicit def timer(implicit s: Scheduler): Temporal[IO] =
     SchedulerEffect.timerLiftIO[IO](s)(IO.ioEffect)
 
   /** TO IMPLEMENT ... */

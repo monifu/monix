@@ -33,7 +33,7 @@ import cats.{
   NonEmptyParallel,
   Order
 }
-import cats.effect.{ Bracket, Effect, ExitCase, Resource }
+import cats.effect.{ Effect, ExitCase, Resource }
 import monix.eval.{ Coeval, Task, TaskLift, TaskLike }
 import monix.eval.Task.defaultOptions
 import monix.execution.Ack.{ Continue, Stop }
@@ -59,6 +59,7 @@ import scala.collection.immutable
 import scala.concurrent.duration.{ Duration, FiniteDuration }
 import scala.concurrent.{ Future, Promise }
 import scala.util.{ Failure, Success, Try }
+import cats.effect.MonadCancel
 
 /** The `Observable` type that implements the Reactive Pattern.
   *
@@ -6347,7 +6348,7 @@ object Observable extends ObservableDeprecatedBuilders {
 
   /** Cats instances for [[Observable]]. */
   class CatsInstances
-    extends Bracket[Observable, Throwable] with Alternative[Observable] with CoflatMap[Observable]
+    extends MonadCancel[Observable, Throwable] with Alternative[Observable] with CoflatMap[Observable]
     with FunctorFilter[Observable] with TaskLift[Observable] {
 
     override def unit: Observable[Unit] =

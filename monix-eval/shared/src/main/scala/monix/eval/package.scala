@@ -17,12 +17,12 @@
 
 package monix
 
-import cats.effect.concurrent.Semaphore
 import monix.catnap.CircuitBreaker
 import monix.execution.atomic.PaddingStrategy
 import monix.execution.atomic.PaddingStrategy.NoPadding
 
 import scala.concurrent.duration.{ Duration, FiniteDuration }
+import cats.effect.std.Semaphore
 
 package object eval {
 

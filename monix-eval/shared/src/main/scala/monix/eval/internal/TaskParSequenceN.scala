@@ -18,10 +18,10 @@
 package monix.eval.internal
 
 import cats.effect.ExitCase
-import cats.effect.concurrent.Deferred
 import monix.catnap.ConcurrentQueue
 import monix.eval.Task
 import monix.execution.{ BufferCapacity, ChannelType }
+import cats.effect.Deferred
 
 private[eval] object TaskParSequenceN {
   /**

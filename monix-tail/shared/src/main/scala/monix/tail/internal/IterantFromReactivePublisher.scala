@@ -57,7 +57,7 @@ private[tail] object IterantFromReactivePublisher {
     private[this] val state = Atomic.withPadding(Uninitialized: State[F, A], LeftRight128)
 
     def start: F[Iterant[F, A]] =
-      F.async { cb =>
+      F.async_ { cb =>
         if (initialize()) {
           sub.request(
             // Requesting unlimited?
@@ -74,13 +74,13 @@ private[tail] object IterantFromReactivePublisher {
 
     private[this] val generate: (Int => F[Iterant[F, A]]) = {
       if (eagerBuffer) {
-        val task = F.async[Iterant[F, A]](take)
+        val task = F.async_[Iterant[F, A]](take)
         toReceive => {
           if (toReceive == 0) sub.request(bufferSize.toLong)
           task
         }
       } else { toReceive =>
-        F.async { cb =>
+        F.async_ { cb =>
           if (toReceive == 0) sub.request(bufferSize.toLong)
           take(cb)
         }

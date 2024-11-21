@@ -17,9 +17,10 @@
 
 package monix.tail.internal
 
-import cats.effect.{ Async, Timer }
+import cats.effect.Async
 import monix.tail.Iterant
 import scala.concurrent.duration._
+import cats.effect.Temporal
 
 private[tail] object IterantIntervalWithFixedDelay {
   /**
@@ -28,7 +29,7 @@ private[tail] object IterantIntervalWithFixedDelay {
   def apply[F[_]](initialDelay: FiniteDuration, delay: FiniteDuration)(
     implicit
     F: Async[F],
-    timer: Timer[F]
+    timer: Temporal[F]
   ): Iterant[F, Long] = {
 
     // Recursive loop

@@ -26,13 +26,14 @@ import monix.execution.schedulers.TestScheduler
 
 import scala.concurrent.duration._
 import scala.util.{ Failure, Success }
+import cats.effect.Temporal
 
 object CircuitBreakerSuite extends TestSuite[TestScheduler] {
   def setup() = TestScheduler()
   def tearDown(env: TestScheduler): Unit =
     assert(env.state.tasks.isEmpty, "There should be no tasks left!")
 
-  implicit def timer(implicit ec: TestScheduler): Timer[IO] =
+  implicit def timer(implicit ec: TestScheduler): Temporal[IO] =
     SchedulerEffect.timerLiftIO[IO](ec)
 
   implicit def contextShift(implicit ec: TestScheduler): ContextShift[IO] =

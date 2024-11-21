@@ -17,12 +17,13 @@
 
 package monix.catnap
 
-import cats.effect.{ ContextShift, IO }
+import cats.effect.IO
 import minitest.TestSuite
 import monix.execution.schedulers.TestScheduler
 
 import scala.concurrent.duration._
 import scala.util.Success
+import cats.effect.Spawn
 
 object TestSchedulerEffectSuite extends TestSuite[TestScheduler] {
   def setup() = TestScheduler()
@@ -109,7 +110,7 @@ object TestSchedulerEffectSuite extends TestSuite[TestScheduler] {
   test("contextShift.shift") { s =>
     val contextShift = SchedulerEffect.contextShift[IO](s)
 
-    val f = contextShift.shift.unsafeToFuture()
+    val f = Spawn[IO].cede.unsafeToFuture()
     assertEquals(f.value, None)
 
     s.tick()

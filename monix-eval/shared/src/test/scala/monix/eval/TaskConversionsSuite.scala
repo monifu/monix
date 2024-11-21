@@ -429,7 +429,7 @@ object TaskConversionsSuite extends BaseTestSuite {
     override def runAsync[A](fa: CIO[A])(cb: (Either[Throwable, A]) => IO[Unit]): SyncIO[Unit] =
       fa.io.runAsync(cb)
     override def async[A](k: ((Either[Throwable, A]) => Unit) => Unit): CIO[A] =
-      CIO(IO.async(k))
+      CIO(IO.async_(k))
     override def asyncF[A](k: ((Either[Throwable, A]) => Unit) => CIO[Unit]): CIO[A] =
       CIO(IO.asyncF(cb => k(cb).io))
     override def suspend[A](thunk: => CIO[A]): CIO[A] =

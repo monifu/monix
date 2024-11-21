@@ -18,10 +18,11 @@
 package monix.tail.internal
 
 import cats.syntax.all._
-import cats.effect.{ Async, Clock, Timer }
+import cats.effect.{ Async, Clock }
 import monix.tail.Iterant
 import monix.tail.Iterant.Suspend
 import scala.concurrent.duration._
+import cats.effect.Temporal
 
 private[tail] object IterantIntervalAtFixedRate {
   /**
@@ -30,7 +31,7 @@ private[tail] object IterantIntervalAtFixedRate {
   def apply[F[_]](
     initialDelay: FiniteDuration,
     interval: FiniteDuration
-  )(implicit F: Async[F], timer: Timer[F], clock: Clock[F]): Iterant[F, Long] = {
+  )(implicit F: Async[F], timer: Temporal[F], clock: Clock[F]): Iterant[F, Long] = {
 
     def loop(time: F[Long], index: Long): F[Iterant[F, Long]] =
       time.map { startTime =>

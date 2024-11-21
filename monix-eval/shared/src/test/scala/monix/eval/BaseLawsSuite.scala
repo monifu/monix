@@ -109,7 +109,7 @@ trait ArbitraryInstancesBase extends monix.execution.ArbitraryInstances {
       getArbitrary[Throwable].map(Task.raiseError)
 
     def genAsync: Gen[Task[A]] =
-      getArbitrary[(Either[Throwable, A] => Unit) => Unit].map(Async[Task].async)
+      getArbitrary[(Either[Throwable, A] => Unit) => Unit].map(Async[Task].async_)
 
     def genCancelable: Gen[Task[A]] =
       for (a <- getArbitrary[A]) yield Task.cancelable0[A] { (sc, cb) =>
@@ -123,7 +123,7 @@ trait ArbitraryInstancesBase extends monix.execution.ArbitraryInstances {
 
     def genNestedAsync: Gen[Task[A]] =
       getArbitrary[(Either[Throwable, Task[A]] => Unit) => Unit]
-        .map(k => Async[Task].async(k).flatMap(x => x))
+        .map(k => Async[Task].async_(k).flatMap(x => x))
 
     def genBindSuspend: Gen[Task[A]] =
       getArbitrary[A].map(Task.evalAsync(_).flatMap(Task.pure))

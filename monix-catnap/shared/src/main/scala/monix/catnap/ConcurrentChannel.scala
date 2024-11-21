@@ -18,7 +18,7 @@
 package monix.catnap
 
 import cats.implicits._
-import cats.effect.{ Concurrent, ContextShift, Resource }
+import cats.effect.{ Concurrent, Resource }
 import monix.catnap.internal.QueueHelpers
 import monix.execution.BufferCapacity.{ Bounded, Unbounded }
 import monix.execution.ChannelType.{ MultiConsumer, MultiProducer }
@@ -545,7 +545,7 @@ object ConcurrentChannel {
     * @param cs $csParam
     * @param F $concurrentParam
     */
-  def of[F[_], E, A](implicit F: Concurrent[F], cs: ContextShift[F]): F[ConcurrentChannel[F, E, A]] =
+  def of[F[_], E, A](implicit F: Concurrent[F]): F[ConcurrentChannel[F, E, A]] =
     withConfig()
 
   /**
@@ -565,7 +565,7 @@ object ConcurrentChannel {
   def withConfig[F[_], E, A](
     defaultConsumerConfig: ConsumerF.Config = ConsumerF.Config.default,
     producerType: ChannelType.ProducerSide = MultiProducer
-  )(implicit F: Concurrent[F], cs: ContextShift[F]): F[ConcurrentChannel[F, E, A]] = {
+  )(implicit F: Concurrent[F]): F[ConcurrentChannel[F, E, A]] = {
     F.delay(unsafe(defaultConsumerConfig, producerType))
   }
 
@@ -590,7 +590,7 @@ object ConcurrentChannel {
   def unsafe[F[_], E, A](
     defaultConsumerConfig: ConsumerF.Config = ConsumerF.Config.default,
     producerType: ChannelType.ProducerSide = MultiProducer
-  )(implicit F: Concurrent[F], cs: ContextShift[F]): ConcurrentChannel[F, E, A] = {
+  )(implicit F: Concurrent[F]): ConcurrentChannel[F, E, A] = {
     new ConcurrentChannel[F, E, A](AtomicAny(State.empty), defaultConsumerConfig, producerType)(F, cs)
   }
 
@@ -601,7 +601,7 @@ object ConcurrentChannel {
     /**
       * @see documentation for [[ConcurrentChannel.of]]
       */
-    def of[E, A](implicit cs: ContextShift[F]): F[ConcurrentChannel[F, E, A]] =
+    def of[E, A]: F[ConcurrentChannel[F, E, A]] =
       ConcurrentChannel.of(F, cs)
 
     /**
@@ -610,7 +610,7 @@ object ConcurrentChannel {
     def withConfig[E, A](
       defaultConsumerConfig: ConsumerF.Config = ConsumerF.Config.default,
       producerType: ChannelType.ProducerSide = MultiProducer
-    )(implicit cs: ContextShift[F]): F[ConcurrentChannel[F, E, A]] = {
+    ): F[ConcurrentChannel[F, E, A]] = {
       ConcurrentChannel.withConfig(defaultConsumerConfig, producerType)(F, cs)
     }
 
@@ -620,7 +620,7 @@ object ConcurrentChannel {
     def unsafe[E, A](
       defaultConsumerConfig: ConsumerF.Config = ConsumerF.Config.default,
       producerType: ChannelType.ProducerSide = MultiProducer
-    )(implicit cs: ContextShift[F]): ConcurrentChannel[F, E, A] = {
+    ): ConcurrentChannel[F, E, A] = {
       ConcurrentChannel.unsafe(defaultConsumerConfig, producerType)(F, cs)
     }
   }

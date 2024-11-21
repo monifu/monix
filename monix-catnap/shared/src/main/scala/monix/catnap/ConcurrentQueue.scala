@@ -17,7 +17,7 @@
 
 package monix.catnap
 
-import cats.effect.{ Concurrent, ContextShift }
+import cats.effect.Concurrent
 import cats.implicits._
 import monix.catnap.internal.QueueHelpers
 import monix.execution.BufferCapacity.{ Bounded, Unbounded }
@@ -421,7 +421,7 @@ object ConcurrentQueue {
     * @param cs $csParam
     * @param F $concurrentParam
     */
-  def bounded[F[_], A](capacity: Int)(implicit F: Concurrent[F], cs: ContextShift[F]): F[ConcurrentQueue[F, A]] =
+  def bounded[F[_], A](capacity: Int)(implicit F: Concurrent[F]): F[ConcurrentQueue[F, A]] =
     withConfig(Bounded(capacity), MPMC)
 
   /**
@@ -441,7 +441,7 @@ object ConcurrentQueue {
     */
   def unbounded[F[_], A](
     chunkSizeHint: Option[Int] = None
-  )(implicit F: Concurrent[F], cs: ContextShift[F]): F[ConcurrentQueue[F, A]] =
+  )(implicit F: Concurrent[F]): F[ConcurrentQueue[F, A]] =
     withConfig(Unbounded(chunkSizeHint), MPMC)
 
   /**
@@ -460,9 +460,7 @@ object ConcurrentQueue {
   @UnsafeProtocol
   def withConfig[F[_], A](capacity: BufferCapacity, channelType: ChannelType)(
     implicit
-    F: Concurrent[F],
-    cs: ContextShift[F]
-  ): F[ConcurrentQueue[F, A]] = {
+    F: Concurrent[F]): F[ConcurrentQueue[F, A]] = {
 
     F.delay(unsafe(capacity, channelType))
   }
@@ -489,9 +487,7 @@ object ConcurrentQueue {
   @UnsafeBecauseImpure
   def unsafe[F[_], A](capacity: BufferCapacity, channelType: ChannelType = MPMC)(
     implicit
-    F: Concurrent[F],
-    cs: ContextShift[F]
-  ): ConcurrentQueue[F, A] = {
+    F: Concurrent[F]): ConcurrentQueue[F, A] = {
 
     new ConcurrentQueue[F, A](capacity, channelType)(F, cs)
   }
@@ -503,29 +499,25 @@ object ConcurrentQueue {
     /**
       * @see documentation for [[ConcurrentQueue.bounded]]
       */
-    def bounded[A](capacity: Int)(implicit cs: ContextShift[F]): F[ConcurrentQueue[F, A]] =
+    def bounded[A](capacity: Int): F[ConcurrentQueue[F, A]] =
       ConcurrentQueue.bounded(capacity)(F, cs)
 
     /**
       * @see documentation for [[ConcurrentQueue.unbounded]]
       */
-    def unbounded[A](chunkSizeHint: Option[Int])(implicit cs: ContextShift[F]): F[ConcurrentQueue[F, A]] =
+    def unbounded[A](chunkSizeHint: Option[Int]): F[ConcurrentQueue[F, A]] =
       ConcurrentQueue.unbounded(chunkSizeHint)(F, cs)
 
     /**
       * @see documentation for [[ConcurrentQueue.withConfig]]
       */
-    def withConfig[A](capacity: BufferCapacity, channelType: ChannelType = MPMC)(
-      implicit cs: ContextShift[F]
-    ): F[ConcurrentQueue[F, A]] =
+    def withConfig[A](capacity: BufferCapacity, channelType: ChannelType = MPMC): F[ConcurrentQueue[F, A]] =
       ConcurrentQueue.withConfig(capacity, channelType)(F, cs)
 
     /**
       * @see documentation for [[ConcurrentQueue.unsafe]]
       */
-    def unsafe[A](capacity: BufferCapacity, channelType: ChannelType = MPMC)(
-      implicit cs: ContextShift[F]
-    ): ConcurrentQueue[F, A] =
+    def unsafe[A](capacity: BufferCapacity, channelType: ChannelType = MPMC): ConcurrentQueue[F, A] =
       ConcurrentQueue.unsafe(capacity, channelType)(F, cs)
   }
 }

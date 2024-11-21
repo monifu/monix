@@ -217,7 +217,7 @@ object FutureLift extends internal.FutureLiftForPlatform {
   }
 
   private def startAsync[F[_], A](fa: ScalaFuture[A])(implicit F: Async[F]): F[A] =
-    F.async { cb =>
+    F.async_ { cb =>
       start(fa, cb)
     }
 

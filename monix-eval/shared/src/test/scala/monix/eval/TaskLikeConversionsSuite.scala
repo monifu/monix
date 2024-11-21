@@ -18,7 +18,7 @@
 package monix.eval
 
 import cats.Eval
-import cats.effect.{ ContextShift, IO, SyncIO }
+import cats.effect.{ IO, SyncIO }
 import monix.catnap.SchedulerEffect
 import monix.execution.CancelablePromise
 import monix.execution.exceptions.DummyException

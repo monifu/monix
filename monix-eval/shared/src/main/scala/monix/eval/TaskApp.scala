@@ -21,6 +21,7 @@ import cats.effect._
 import monix.catnap.SchedulerEffect
 import monix.eval.instances.CatsConcurrentEffectForTask
 import monix.execution.Scheduler
+import cats.effect.Temporal
 
 /** Safe `App` type that executes a [[Task]].  Shutdown occurs after
   * the `Task` completes, as follows:
@@ -88,7 +89,7 @@ trait TaskApp {
     val app = new IOApp {
       override implicit lazy val contextShift: ContextShift[IO] =
         SchedulerEffect.contextShift[IO](scheduler)(IO.ioEffect)
-      override implicit lazy val timer: Timer[IO] =
+      override implicit lazy val timer: Temporal[IO] =
         SchedulerEffect.timerLiftIO[IO](scheduler)(IO.ioEffect)
       def run(args: List[String]): IO[ExitCode] =
         self.run(args).to[IO]

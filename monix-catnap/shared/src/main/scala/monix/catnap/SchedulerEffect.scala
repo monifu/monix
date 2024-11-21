@@ -24,6 +24,7 @@ import monix.execution.internal.AttemptCallback.RunnableTick
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{ FiniteDuration, TimeUnit }
+import cats.effect.Temporal
 
 object SchedulerEffect {
 
@@ -60,8 +61,8 @@ object SchedulerEffect {
     *   }
     * }}}
     */
-  def timer[F[_]](source: Scheduler)(implicit F: Concurrent[F]): Timer[F] =
-    new Timer[F] {
+  def timer[F[_]](source: Scheduler)(implicit F: Concurrent[F]): Temporal[F] =
+    new Temporal[F] {
       override def sleep(d: FiniteDuration): F[Unit] =
         F.cancelable { cb =>
           val token = source.scheduleOnce(d.length, d.unit, new RunnableTick(cb))
@@ -90,8 +91,8 @@ object SchedulerEffect {
     *   }
     * }}}
     */
-  def timerLiftIO[F[_]](source: Scheduler)(implicit F: LiftIO[F]): Timer[F] =
-    new Timer[F] {
+  def timerLiftIO[F[_]](source: Scheduler)(implicit F: LiftIO[F]): Temporal[F] =
+    new Temporal[F] {
       override def sleep(d: FiniteDuration): F[Unit] =
         F.liftIO(IO.cancelable { cb =>
           val token = source.scheduleOnce(d.length, d.unit, new RunnableTick(cb))

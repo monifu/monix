@@ -19,7 +19,7 @@ package monix.tail
 package internal
 
 import cats.implicits._
-import cats.effect.{ Concurrent, ContextShift, Resource }
+import cats.effect.{ Concurrent, Resource }
 import monix.catnap.{ ConcurrentChannel, ConsumerF }
 import monix.execution.ChannelType.SingleProducer
 import monix.tail.Iterant.Consumer
@@ -30,9 +30,7 @@ private[tail] object IterantConsume {
     */
   def apply[F[_], A](self: Iterant[F, A], cfg: ConsumerF.Config)(
     implicit
-    F: Concurrent[F],
-    cs: ContextShift[F]
-  ): Resource[F, Consumer[F, A]] = {
+    F: Concurrent[F]): Resource[F, Consumer[F, A]] = {
 
     /*_*/
     val res = Resource.apply {

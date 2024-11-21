@@ -17,7 +17,7 @@
 
 package monix.catnap
 
-import cats.effect.{ Async, ContextShift, IO }
+import cats.effect.{ Async, IO }
 import minitest.TestSuite
 import monix.catnap.syntax._
 import monix.execution.exceptions.DummyException

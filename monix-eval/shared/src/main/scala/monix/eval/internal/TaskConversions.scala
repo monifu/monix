@@ -67,7 +67,7 @@ private[eval] object TaskConversions {
       case Task.Error(e) => F.raiseError(e)
       case Task.Eval(thunk) => F.delay(thunk())
       case task =>
-        F.async { cb =>
+        F.async_ { cb =>
           eff.runAsync(task)(r => { cb(r); IO.unit }).unsafeRunSync()
         }
     }

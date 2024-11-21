@@ -22,6 +22,7 @@ import monix.execution.schedulers.ReferenceSchedulerSuite.DummyScheduler
 
 import scala.concurrent.duration._
 import scala.util.Success
+import cats.effect.Spawn
 
 class ReferenceSchedulerEffectSuite extends SimpleTestSuite {
   test("clock.monotonic") {
@@ -58,7 +59,7 @@ class ReferenceSchedulerEffectSuite extends SimpleTestSuite {
     val s = new DummyScheduler
     val contextShift = SchedulerEffect.contextShift[IO](s)
 
-    val f = contextShift.shift.unsafeToFuture()
+    val f = Spawn[IO].cede.unsafeToFuture()
     assertEquals(f.value, None)
 
     s.tick()
