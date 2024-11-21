@@ -1867,8 +1867,8 @@ sealed abstract class Iterant[F[_], A] extends Product with Serializable {
     */
   @UnsafeProtocol
   final def consumeWithConfig(config: ConsumerF.Config)(
-    implicit
-    F: Concurrent[F]): Resource[F, Consumer[F, A]] = {
+    implicit F: Concurrent[F]
+  ): Resource[F, Consumer[F, A]] = {
     IterantConsume(self, config)(F, cs)
   }
 
@@ -2846,8 +2846,8 @@ object Iterant extends IterantInstances {
     maxBatchSize: Int = recommendedBufferChunkSize,
     producerType: ChannelType.ProducerSide = MultiProducer
   )(
-    implicit
-    F: Concurrent[F]): F[(Producer[F, A], Iterant[F, A])] = {
+    implicit F: Concurrent[F]
+  ): F[(Producer[F, A], Iterant[F, A])] = {
 
     val channelF = ConcurrentChannel[F].withConfig[Option[Throwable], A](
       producerType = producerType

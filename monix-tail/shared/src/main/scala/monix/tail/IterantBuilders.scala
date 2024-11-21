@@ -291,8 +291,8 @@ object IterantBuilders {
       maxBatchSize: Int = recommendedBufferChunkSize,
       producerType: ChannelType.ProducerSide = MultiProducer
     )(
-      implicit
-      F: Concurrent[F]): F[(ProducerF[F, Option[Throwable], A], Iterant[F, A])] =
+      implicit F: Concurrent[F]
+    ): F[(ProducerF[F, Option[Throwable], A], Iterant[F, A])] =
       Iterant.channel(bufferCapacity, maxBatchSize, producerType)
   }
 }

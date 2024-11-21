@@ -29,8 +29,8 @@ private[tail] object IterantConsume {
     * Implementation for [[Iterant.consume]].
     */
   def apply[F[_], A](self: Iterant[F, A], cfg: ConsumerF.Config)(
-    implicit
-    F: Concurrent[F]): Resource[F, Consumer[F, A]] = {
+    implicit F: Concurrent[F]
+  ): Resource[F, Consumer[F, A]] = {
 
     /*_*/
     val res = Resource.apply {

@@ -208,8 +208,8 @@ object MVar {
     * Builds an [[MVar]] instance with an `initial` value.
     */
   def of[F[_], A](initial: A, ps: PaddingStrategy = NoPadding)(
-    implicit
-    F: Concurrent[F] OrElse Async[F]): F[MVar[F, A]] = {
+    implicit F: Concurrent[F] OrElse Async[F]
+  ): F[MVar[F, A]] = {
 
     F.fold(
       implicit F => F.delay(new MVar(new ConcurrentImpl(Some(initial), ps))),
