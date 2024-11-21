@@ -39,7 +39,7 @@ addCommandAlias(
 // Dependencies - Versions
 
 val cats_Version              = "2.7.0"
-val catsEffect_Version        = "2.5.5"
+val catsEffect_Version        = "3.5.6"
 val fs2_Version               = "2.5.11"
 val jcTools_Version           = "3.3.0"
 val reactiveStreams_Version   = "1.0.3"
